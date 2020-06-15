@@ -593,6 +593,7 @@ class AwsS3Adapter extends AbstractAdapter implements CanOverwriteFiles
         $acl = array_key_exists('ACL', $options) ? $options['ACL'] : 'private';
 
         // Multipart options
+        $before_upload = array_key_exists('before_upload', $options) ? $options['before_upload'] : null;
         $concurrency = array_key_exists('concurrency', $options) ? $options['concurrency'] : null;
         $mup_threshold = array_key_exists('mup_threshold', $options) ? $options['mup_threshold'] : null;
         $part_size = array_key_exists('part_size', $options) ? $options['part_size'] : null;
@@ -613,6 +614,7 @@ class AwsS3Adapter extends AbstractAdapter implements CanOverwriteFiles
 
         try {
             $this->s3Client->upload($this->bucket, $key, $body, $acl, [
+                'before_upload' => $before_upload,
                 'concurrency' => $concurrency,
                 'mup_threshold' => $mup_threshold,
                 'part_size' => $part_size,
